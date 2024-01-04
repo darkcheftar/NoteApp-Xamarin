@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:XAMLUI.ViewModels"
+             x:Class="NoteApp.MainPage">
+
+    <ContentPage.BindingContext>
+        <local:MainPageViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid Margin="20,40">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".01*" />
+            <RowDefinition Height=".2*" />
+            <RowDefinition Height=".2*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+
+        <Image Grid.Row="0"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Source="xamagon" />
+
+        <Editor Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Placeholder="Enter Note"
+                Margin="10,10"
+                BackgroundColor="White"
+                TextColor="Black"
+                Text="{Binding NoteText}" />
+
+        <Button Text="Save"
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="10,0"
+                Command="{Binding SaveNoteCommand}"
+                BackgroundColor="Green"
+                TextColor="White" />
+
+        <Button Text="Delete"
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="10,0"
+                Command="{Binding EraseNotesCommand}"
+                BackgroundColor="Red"
+                TextColor="White" />
+
+        <CollectionView Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="3"
+                        ItemsSource="{Binding Notes}"
+                        x:Name="NoteView">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10,10">
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width=".5*" />
+                            </Grid.ColumnDefinitions>
+                           
+                            <Label Grid.Column="0"
+                                   Text="{Binding Text}"
+                                   VerticalTextAlignment="Center"
+                       FontAttributes="Bold" />
+                            <Button Grid.Column="1"
+                                    TextColor="Red"
+                                    Text="Delete"
+                                    Command="{Binding Path=BindingContext.DeleteNoteCommand, Source={x:Reference NoteView}}"
+                                    CommandParameter="{Binding .}"
+                            />
+                        </Grid>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+</ContentPage>
